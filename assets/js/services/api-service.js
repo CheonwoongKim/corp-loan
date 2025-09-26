@@ -38,6 +38,7 @@ class APIService {
 
         try {
             console.log(`🌐 API Request: ${finalOptions.method || 'GET'} ${url}`);
+            console.log(`🌐 Request Options:`, finalOptions);
 
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), this.timeout);
@@ -49,6 +50,9 @@ class APIService {
 
             clearTimeout(timeoutId);
 
+            console.log(`🌐 Response Status: ${response.status}`);
+            console.log(`🌐 Response Headers:`, Object.fromEntries(response.headers.entries()));
+
             const contentType = response.headers.get('content-type');
             let data;
 
@@ -59,6 +63,7 @@ class APIService {
             }
 
             if (!response.ok) {
+                console.error(`❌ HTTP Error ${response.status}:`, data);
                 throw new Error(data.message || `HTTP Error: ${response.status}`);
             }
 

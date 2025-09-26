@@ -54,6 +54,9 @@ async function updateDashboardStatsFromAPI() {
         const response = await apiService.getAllLoans();
 
         console.log('🔍 API 응답:', response);
+        console.log('🔍 응답 타입:', typeof response);
+        console.log('🔍 response.items:', response.items);
+        console.log('🔍 response.data:', response.data);
 
         // Handle different response formats
         let loans = [];
@@ -61,12 +64,17 @@ async function updateDashboardStatsFromAPI() {
         if (response && response.items) {
             // Direct API response format
             loans = response.items;
+            console.log('✅ items 형식 사용, loans:', loans);
         } else if (response && response.data && response.data.loans) {
             // Expected format
             loans = response.data.loans;
+            console.log('✅ data.loans 형식 사용, loans:', loans);
         } else if (response && Array.isArray(response)) {
             // Array format
             loans = response;
+            console.log('✅ 배열 형식 사용, loans:', loans);
+        } else {
+            console.log('❌ 알 수 없는 응답 형식:', response);
         }
 
         if (loans.length > 0) {
@@ -251,14 +259,20 @@ function getStepProgress(stage, currentLoan) {
  * Update recent applications section
  */
 async function updateRecentApplications() {
-    const recentSection = document.querySelector('section:last-of-type .p-6');
-    if (!recentSection) return;
+    const recentSection = document.getElementById('loansTableBody');
+    if (!recentSection) {
+        console.log('❌ loansTableBody 요소를 찾을 수 없습니다');
+        return;
+    }
+    console.log('✅ loansTableBody 요소 발견');
 
     try {
         // Always try to get data from server first
         console.log('🔍 대출 목록 요청 중...');
         const response = await apiService.getAllLoans({ limit: 10 });
         console.log('📊 서버 응답:', response);
+        console.log('📊 응답 타입:', typeof response);
+        console.log('📊 response.items:', response.items);
 
         // Handle different response formats
         let loans = [];
@@ -266,17 +280,22 @@ async function updateRecentApplications() {
         if (response && response.items) {
             // Direct API response format
             loans = response.items;
+            console.log('✅ Recent: items 형식 사용, loans:', loans);
         } else if (response && response.data && response.data.loans) {
             // Expected format
             loans = response.data.loans;
+            console.log('✅ Recent: data.loans 형식 사용, loans:', loans);
         } else if (response && Array.isArray(response)) {
             // Array format
             loans = response;
+            console.log('✅ Recent: 배열 형식 사용, loans:', loans);
+        } else {
+            console.log('❌ Recent: 알 수 없는 응답 형식:', response);
         }
 
         if (loans.length > 0) {
             console.log('✅ 대출 데이터 발견:', loans.length, '개');
-            recentSection.innerHTML = createRecentApplicationsTable(loans, true);
+            recentSection.innerHTML = createTableRows(loans, true);
             return;
         } else {
             console.log('❌ 대출 데이터 없음 또는 실패');
@@ -284,55 +303,137 @@ async function updateRecentApplications() {
 
         // Show empty state when no data
         recentSection.innerHTML = `
-            <div class="text-center py-12 text-gray-500">
-                <i class="fas fa-inbox text-4xl mb-4"></i>
-                <p class="text-lg">아직 등록된 대출 신청이 없습니다</p>
-                <p class="text-sm mt-2">신규 대출 등록 버튼을 클릭하여 첫 번째 신청을 등록해보세요</p>
-                <button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="startNewLoan()">
-                    <i class="fas fa-plus mr-2"></i>신규 대출 등록 시작
-                </button>
-            </div>
+            <tr>
+                <td colspan="6" class="text-center py-12 text-gray-500">
+                    <div>
+                        <i class="fas fa-inbox text-4xl mb-4"></i>
+                        <p class="text-lg">아직 등록된 대출 신청이 없습니다</p>
+                        <p class="text-sm mt-2">신규 대출 등록 버튼을 클릭하여 첫 번째 신청을 등록해보세요</p>
+                        <button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="startNewLoan()">
+                            <i class="fas fa-plus mr-2"></i>신규 대출 등록 시작
+                        </button>
+                    </div>
+                </td>
+            </tr>
         `;
 
     } catch (error) {
         console.error('❌ 대출 목록 로딩 실패:', error);
         // Show error state - don't use local data
         recentSection.innerHTML = `
-            <div class="text-center py-12 text-gray-500">
-                <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
-                <p class="text-lg">데이터를 불러올 수 없습니다</p>
-                <p class="text-sm mt-2">서버 연결을 확인해주세요</p>
-                <button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="location.reload()">
-                    <i class="fas fa-refresh mr-2"></i>새로고침
-                </button>
-            </div>
+            <tr>
+                <td colspan="6" class="text-center py-12 text-gray-500">
+                    <div>
+                        <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+                        <p class="text-lg">데이터를 불러올 수 없습니다</p>
+                        <p class="text-sm mt-2">서버 연결을 확인해주세요</p>
+                        <button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="location.reload()">
+                            <i class="fas fa-refresh mr-2"></i>새로고침
+                        </button>
+                    </div>
+                </td>
+            </tr>
         `;
     }
+}
+
+/**
+ * Create table rows for the existing table structure
+ */
+function createTableRows(data, isServerData = false) {
+    console.log('🏗️ createTableRows 호출:', data, 'isServerData:', isServerData);
+
+    const recentData = data.slice(0, 10); // Limit to 10 recent items
+    return recentData.map(item => createTableRow(item, isServerData)).join('');
+}
+
+/**
+ * Create table row for the existing HTML structure
+ */
+function createTableRow(data, isServerData = false) {
+    console.log('📄 createTableRow 호출:', data, 'isServerData:', isServerData);
+
+    let loanId, companyName, applicationType, currentStage, documentCount, createdAt, workflowStatus, loanAmount;
+
+    if (isServerData) {
+        // Server data format - handle both API response formats
+        loanId = data.loan_id || data.id || 'Unknown';
+        companyName = data.company_name || data.customer_name || 'Unknown Company';
+        applicationType = data.application_type || data.product_name || '일반대출';
+        currentStage = data.current_stage || 1;
+        documentCount = data.document_count || 0;
+        createdAt = data.created_at || data.apply_date;
+        workflowStatus = data.workflow_status || data.status;
+        loanAmount = data.requested_amount || data.loan_amount || '0';
+
+        console.log('📊 Row 매핑 결과:', {
+            loanId, companyName, applicationType, currentStage, documentCount, createdAt, workflowStatus, loanAmount
+        });
+    } else {
+        // Local data format (fallback)
+        loanId = data.loanId;
+        companyName = data.companyName;
+        applicationType = data.applicationType;
+        currentStage = data.currentStage;
+        documentCount = data.uploadedDocuments ? data.uploadedDocuments.length : 0;
+        createdAt = data.createdAt;
+        workflowStatus = data.status;
+        loanAmount = data.requestedAmount;
+    }
+
+    const statusBadge = getStatusBadge(workflowStatus);
+    const formattedDate = createdAt ? new Date(createdAt).toLocaleDateString('ko-KR') : 'N/A';
+
+    return `
+        <tr class="hover:bg-gray-50 cursor-pointer transition-colors" onclick="viewLoanDetail('${loanId}')">
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">${companyName}</div>
+                <div class="text-sm text-gray-500">${loanId}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">${loanAmount}</td>
+            <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <div class="text-sm font-medium">단계 ${currentStage}/8</div>
+                <div class="text-xs text-gray-400">${applicationType}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button onclick="event.stopPropagation(); viewLoanDetail('${loanId}')"
+                        class="text-blue-600 hover:text-blue-900 transition-colors">
+                    상세보기
+                </button>
+            </td>
+        </tr>
+    `;
 }
 
 /**
  * Update recent applications section with provided data
  */
 function updateRecentApplicationsFromData(loans) {
-    const recentSection = document.querySelector('section:last-of-type .p-6');
+    const recentSection = document.getElementById('loansTableBody');
     if (!recentSection || !loans || loans.length === 0) return;
 
-    recentSection.innerHTML = createRecentApplicationsTable(loans, true);
+    recentSection.innerHTML = createTableRows(loans, true);
 }
 
 /**
  * Create recent applications table
  */
 function createRecentApplicationsTable(data, isServerData = false) {
+    console.log('🏗️ createRecentApplicationsTable 호출:', data, 'isServerData:', isServerData);
+
     let sortedData, recentData;
 
     if (isServerData) {
         // Server data is already sorted by created_at DESC
         recentData = data.slice(0, 10);
+        console.log('📊 Server data 처리:', recentData);
     } else {
         // Local data
         sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         recentData = sortedData.slice(0, 10);
+        console.log('📊 Local data 처리:', recentData);
     }
 
     return `
@@ -362,6 +463,8 @@ function createRecentApplicationsTable(data, isServerData = false) {
  * Create workflow table row with enhanced status display
  */
 function createWorkflowRow(data, isServerData = false) {
+    console.log('📄 createWorkflowRow 호출:', data, 'isServerData:', isServerData);
+
     let loanId, companyName, applicationType, currentStage, documentCount, createdAt, workflowStatus;
 
     if (isServerData) {
@@ -373,6 +476,10 @@ function createWorkflowRow(data, isServerData = false) {
         documentCount = data.document_count || 0;
         createdAt = data.created_at || data.apply_date;
         workflowStatus = data.workflow_status || data.status;
+
+        console.log('📊 Row 매핑 결과:', {
+            loanId, companyName, applicationType, currentStage, documentCount, createdAt, workflowStatus
+        });
     } else {
         // Local data format
         loanId = data.loanId;
