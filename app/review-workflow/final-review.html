@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최종 심사 - AI 기업여신 심사시스템</title>
+
+    <!-- CDN Assets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="assets/css/core/main.css">
+    <link rel="stylesheet" href="assets/css/core/variables.css">
+    
+
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sub Navigation Component -->
+<nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-4">
+                <!-- Back Button -->
+                <a href="index.html" class="text-blue-600 hover:text-blue-800 transition-colors"
+                   title="이전 페이지로 돌아가기" aria-label="대시보드로 돌아가기">
+                    <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>대시보드로 돌아가기
+                </a>
+
+                <!-- Breadcrumb -->
+                
+            </div>
+
+            <!-- Page Title -->
+            
+            <h1 class="text-xl font-semibold text-gray-900">최종 심사 인터페이스</h1>
+            
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-3">
+                
+                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                        onclick="saveFinalReview()"
+                        title="현재 작업 내용을 임시저장합니다" aria-label="임시저장">
+                    <i class="fas fa-save mr-2" aria-hidden="true"></i>임시저장
+                </button>
+                
+
+                
+                <button class="p-2 text-gray-400 hover:text-gray-600"
+                        title="도움말" aria-label="도움말 열기">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="space-y-6">
+            <div id="workflowStatus"></div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">AI 심사의견서 및 최종 결정</h2>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-medium text-gray-900 mb-2">AI 심사 의견</h3>
+                        <div id="aiOpinion" class="bg-gray-50 border border-gray-300 rounded-lg p-4">
+                            <!-- AI 생성 심사의견 -->
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-medium text-gray-900 mb-2">최종 결정</h3>
+                        <div class="flex space-x-4">
+                            <button class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                                    title="대출을 승인합니다" aria-label="대출 승인">승인</button>
+                            <button class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                                    title="대출을 반려합니다" aria-label="대출 반려">반려</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+
+    <!-- Common Scripts -->
+    <script src="assets/js/services/api-service.js"></script>
+    <script src="assets/js/core/template-manager.js"></script>
+    <script src="assets/js/core/page-utils.js"></script>
+    
+
+    <!-- Page-specific Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if(typeof initFinalReview === "function") initFinalReview();
+        });
+    </script>
+</body>
+</html>

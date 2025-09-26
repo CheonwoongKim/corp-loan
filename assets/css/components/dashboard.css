@@ -1,0 +1,181 @@
+/* Dashboard specific styles */
+
+/* Workflow Steps */
+.workflow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-light);
+    background-color: var(--bg-primary);
+    transition: var(--transition-slow);
+    cursor: pointer;
+    min-height: 120px;
+}
+
+.workflow-step:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.workflow-step.active {
+    border-color: var(--primary);
+    background-color: var(--primary-50);
+}
+
+.workflow-step.completed {
+    border-color: var(--success);
+    background-color: var(--success-50);
+}
+
+.workflow-step.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.workflow-step.disabled:hover {
+    transform: none;
+    box-shadow: var(--shadow-base);
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+    transition: var(--transition-base);
+}
+
+.workflow-step .step-icon {
+    background-color: var(--bg-tertiary);
+    color: var(--text-tertiary);
+}
+
+.workflow-step.active .step-icon {
+    background-color: var(--primary);
+    color: white;
+}
+
+.workflow-step.completed .step-icon {
+    background-color: var(--success);
+    color: white;
+}
+
+.step-title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+    transition: var(--transition-base);
+}
+
+.step-description {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    line-height: var(--leading-tight);
+}
+
+.workflow-step.completed .step-title {
+    color: var(--success);
+}
+
+.workflow-step.active .step-title {
+    color: var(--primary);
+}
+
+/* Stats Cards Animation */
+.stats-card {
+    transition: transform 0.2s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state i {
+    color: #d1d5db;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--secondary-gray);
+    margin-bottom: 1.5rem;
+}
+
+/* Progress Indicators */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-blue);
+    transition: width 0.5s ease;
+    border-radius: 2px;
+}
+
+.workflow-step.completed .progress-fill {
+    background-color: var(--success-green);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .workflow-step {
+        min-height: 100px;
+        padding: 0.75rem;
+    }
+
+    .step-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .step-title {
+        font-size: 0.8125rem;
+    }
+
+    .step-description {
+        font-size: 0.6875rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .workflow-step {
+        min-height: 80px;
+        padding: 0.5rem;
+    }
+
+    .step-title {
+        font-size: 0.75rem;
+    }
+
+    .step-description {
+        display: none;
+    }
+}

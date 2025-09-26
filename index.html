@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드 - AI 기업여신 심사시스템</title>
+
+    <!-- CDN Assets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="assets/css/core/main.css">
+    <link rel="stylesheet" href="assets/css/core/variables.css">
+    
+
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Main Header Component -->
+<header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-university text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">AI 기업여신 심사시스템</h1>
+                        <p class="text-sm text-gray-500">Corporate Loan Underwriting System</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional page title -->
+            
+
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <button class="p-2 text-gray-400 hover:text-gray-600 relative"
+                        title="알림" aria-label="알림 3개">
+                    <i class="fas fa-bell text-lg" aria-hidden="true"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center" aria-hidden="true">3</span>
+                </button>
+
+                <!-- New Loan Button -->
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        onclick="location.href='new-loan.html'"
+                        title="신규 대출 등록" aria-label="신규 대출 등록">
+                    <i class="fas fa-plus mr-2" aria-hidden="true"></i>신규 대출 등록
+                </button>
+
+                <!-- User Menu -->
+                <div class="relative">
+                    <button class="flex items-center space-x-2 p-2 text-gray-600 hover:text-gray-800"
+                            title="사용자 메뉴" aria-label="사용자 메뉴 열기">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="hidden md:block text-sm">심사역</span>
+                        <i class="fas fa-chevron-down text-xs" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- Dropdown menu (hidden by default) -->
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">프로필</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">설정</a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Stats Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg">
+                        <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">전체 신청</p>
+                        <p class="text-2xl font-bold text-gray-900" id="totalApplications">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">승인 완료</p>
+                        <p class="text-2xl font-bold text-gray-900" id="approvedApplications">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg">
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">심사 중</p>
+                        <p class="text-2xl font-bold text-gray-900" id="pendingApplications">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center">
+                    <div class="p-3 bg-red-100 rounded-lg">
+                        <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">반려</p>
+                        <p class="text-2xl font-bold text-gray-900" id="rejectedApplications">0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loan Applications Table -->
+        <section class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-gray-900">대출 신청 목록</h2>
+                    <div class="flex space-x-3">
+                        <label for="searchInput" class="sr-only">회사명 검색</label>
+                        <input type="text" id="searchInput" placeholder="회사명으로 검색..."
+                               title="회사명으로 검색"
+                               class="px-3 py-2 border border-gray-300 rounded-md text-sm">
+                        <label for="statusFilter" class="sr-only">상태 필터</label>
+                        <select id="statusFilter" class="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                title="대출 상태 필터">
+                            <option value="">모든 상태</option>
+                            <option value="pending">심사 중</option>
+                            <option value="approved">승인</option>
+                            <option value="rejected">반려</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200" id="loansTable">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" data-sort="0"
+                                title="회사명으로 정렬" role="button" tabindex="0">
+                                회사명 <i class="fas fa-sort ml-1" aria-hidden="true"></i>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" data-sort="1"
+                                title="신청일로 정렬" role="button" tabindex="0">
+                                신청일 <i class="fas fa-sort ml-1" aria-hidden="true"></i>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" data-sort="2"
+                                title="대출금액으로 정렬" role="button" tabindex="0">
+                                대출금액 <i class="fas fa-sort ml-1" aria-hidden="true"></i>
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                상태
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                진행단계
+                            </th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                작업
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="loansTableBody">
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div id="paginationContainer"></div>
+            </div>
+        </section>
+    </main>
+
+    
+
+    <!-- Common Scripts -->
+    <script src="assets/js/services/api-service.js"></script>
+    <script src="assets/js/core/template-manager.js"></script>
+    <script src="assets/js/core/page-utils.js"></script>
+    <script src="assets/js/components/dashboard.js"></script>
+
+    <!-- Page-specific Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if(typeof initDashboard === "function") initDashboard();
+        });
+    </script>
+</body>
+</html>

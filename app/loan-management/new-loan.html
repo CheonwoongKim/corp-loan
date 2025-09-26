@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신규 대출 등록 - AI 기업여신 심사시스템</title>
+
+    <!-- CDN Assets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="assets/css/core/main.css">
+    <link rel="stylesheet" href="assets/css/core/variables.css">
+    
+
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sub Navigation Component -->
+<nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-4">
+                <!-- Back Button -->
+                <a href="index.html" class="text-blue-600 hover:text-blue-800 transition-colors"
+                   title="이전 페이지로 돌아가기" aria-label="대시보드로 돌아가기">
+                    <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>대시보드로 돌아가기
+                </a>
+
+                <!-- Breadcrumb -->
+                
+            </div>
+
+            <!-- Page Title -->
+            
+            <h1 class="text-xl font-semibold text-gray-900">신규 대출 등록</h1>
+            
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-3">
+                
+                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                        onclick="saveFormData()"
+                        title="현재 작업 내용을 임시저장합니다" aria-label="임시저장">
+                    <i class="fas fa-save mr-2" aria-hidden="true"></i>임시저장
+                </button>
+                
+
+                
+                <button class="p-2 text-gray-400 hover:text-gray-600"
+                        title="도움말" aria-label="도움말 열기">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div class="space-y-8">
+            <!-- Company Information Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-building mr-3 text-blue-600"></i>
+                    회사 정보
+                </h2>
+
+                <form id="loanApplicationForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="companyName" class="block text-sm font-medium text-gray-700 mb-2">회사명 <span class="text-red-500">*</span></label>
+                            <input type="text" id="companyName" name="companyName" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="주식회사 한국기업"
+                                   aria-required="true" aria-describedby="companyName-desc">
+                            <div id="companyName-desc" class="sr-only">대출 신청할 회사명을 입력하세요</div>
+                        </div>
+
+                        <div>
+                            <label for="businessNumber" class="block text-sm font-medium text-gray-700 mb-2">사업자등록번호</label>
+                            <input type="text" id="businessNumber" name="businessNumber"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="123-45-67890"
+                                   aria-describedby="businessNumber-desc">
+                            <div id="businessNumber-desc" class="sr-only">회사의 사업자등록번호를 입력하세요</div>
+                        </div>
+
+                        <div>
+                            <label for="loanAmount" class="block text-sm font-medium text-gray-700 mb-2">대출 신청 금액 <span class="text-red-500">*</span></label>
+                            <input type="number" id="loanAmount" name="loanAmount" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="1000000000"
+                                   aria-required="true" aria-describedby="loanAmount-desc">
+                            <div id="loanAmount-desc" class="sr-only">원하는 대출 금액을 원 단위로 입력하세요</div>
+                        </div>
+
+                        <div>
+                            <label for="industry" class="block text-sm font-medium text-gray-700 mb-2">업종</label>
+                            <select id="industry" name="industry"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    aria-describedby="industry-desc">
+                                <option value="">업종 선택</option>
+                                <option value="manufacturing">제조업</option>
+                                <option value="service">서비스업</option>
+                                <option value="construction">건설업</option>
+                            </select>
+                            <div id="industry-desc" class="sr-only">회사의 주요 업종을 선택하세요</div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="location.href='index.html'"
+                                class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                                title="신청을 취소하고 대시보드로 돌아갑니다" aria-label="취소">
+                            취소
+                        </button>
+                        <button type="submit"
+                                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                title="대출 신청을 등록합니다" aria-label="신청 등록">
+                            신청 등록
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    
+
+    <!-- Common Scripts -->
+    <script src="assets/js/services/api-service.js"></script>
+    <script src="assets/js/core/template-manager.js"></script>
+    <script src="assets/js/core/page-utils.js"></script>
+    
+
+    <!-- Page-specific Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if(typeof initNewLoan === "function") initNewLoan();
+        });
+    </script>
+</body>
+</html>

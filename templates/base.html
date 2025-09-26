@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}} - AI 기업여신 심사시스템</title>
+
+    <!-- CDN Assets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Local Assets -->
+    <link rel="stylesheet" href="assets/css/core/main.css">
+    <link rel="stylesheet" href="assets/css/core/variables.css">
+    {{PAGE_STYLES}}
+
+</head>
+<body class="bg-gray-50 min-h-screen">
+    {{HEADER_CONTENT}}
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {{MAIN_CONTENT}}
+    </main>
+
+    {{FOOTER_CONTENT}}
+
+    <!-- Common Scripts -->
+    <script src="assets/js/services/api-service.js"></script>
+    <script src="assets/js/core/template-manager.js"></script>
+    <script src="assets/js/core/page-utils.js"></script>
+    {{PAGE_SCRIPTS}}
+
+    <!-- Page-specific Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {{PAGE_INIT_SCRIPT}}
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!-- Sub Navigation Component -->
+<nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-4">
+                <!-- Back Button -->
+                <a href="{{BACK_URL}}" class="text-blue-600 hover:text-blue-800 transition-colors"
+                   title="이전 페이지로 돌아가기" aria-label="{{BACK_TEXT}}">
+                    <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>{{BACK_TEXT}}
+                </a>
+
+                <!-- Breadcrumb -->
+                {{#if BREADCRUMB}}
+                <nav class="flex items-center space-x-2 text-sm text-gray-500">
+                    {{#each BREADCRUMB}}
+                    {{#unless @last}}
+                    <a href="{{url}}" class="hover:text-gray-700">{{name}}</a>
+                    <span class="mx-2">/</span>
+                    {{else}}
+                    <span class="text-gray-900">{{name}}</span>
+                    {{/unless}}
+                    {{/each}}
+                </nav>
+                {{/if}}
+            </div>
+
+            <!-- Page Title -->
+            {{#if PAGE_TITLE}}
+            <h1 class="text-xl font-semibold text-gray-900">{{PAGE_TITLE}}</h1>
+            {{/if}}
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-3">
+                {{#if SAVE_BUTTON}}
+                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                        onclick="{{SAVE_ACTION}}"
+                        title="현재 작업 내용을 임시저장합니다" aria-label="임시저장">
+                    <i class="fas fa-save mr-2" aria-hidden="true"></i>임시저장
+                </button>
+                {{/if}}
+
+                {{#if HELP_BUTTON}}
+                <button class="p-2 text-gray-400 hover:text-gray-600"
+                        title="도움말" aria-label="도움말 열기">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                </button>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</nav>

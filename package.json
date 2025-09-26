@@ -1,0 +1,25 @@
+{
+  "name": "corp-loan-system",
+  "version": "1.0.0",
+  "description": "AI-based Corporate Loan Underwriting System",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build-html.js",
+    "build:watch": "nodemon --watch templates --ext html,js --exec \"npm run build\"",
+    "dev": "npm run build && python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "clean": "rm -f *.html",
+    "lint:html": "echo 'HTML validation - implement with htmlhint or similar'",
+    "validate": "node validate-html.js"
+  },
+  "keywords": ["loan", "ai", "underwriting", "fintech"],
+  "author": "Corporate Loan Team",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.0.0",
+    "htmlhint": "^1.1.4"
+  },
+  "dependencies": {
+    "playwright": "^1.55.1"
+  }
+}

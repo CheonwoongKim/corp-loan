@@ -1,0 +1,59 @@
+<!-- Main Header Component -->
+<header class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-university text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">AI 기업여신 심사시스템</h1>
+                        <p class="text-sm text-gray-500">Corporate Loan Underwriting System</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional page title -->
+            {{#if PAGE_TITLE}}
+            <h2 class="text-lg font-semibold text-gray-800">{{PAGE_TITLE}}</h2>
+            {{/if}}
+
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <button class="p-2 text-gray-400 hover:text-gray-600 relative"
+                        title="알림" aria-label="알림 3개">
+                    <i class="fas fa-bell text-lg" aria-hidden="true"></i>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center" aria-hidden="true">3</span>
+                </button>
+
+                <!-- New Loan Button -->
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        onclick="location.href='new-loan.html'"
+                        title="신규 대출 등록" aria-label="신규 대출 등록">
+                    <i class="fas fa-plus mr-2" aria-hidden="true"></i>신규 대출 등록
+                </button>
+
+                <!-- User Menu -->
+                <div class="relative">
+                    <button class="flex items-center space-x-2 p-2 text-gray-600 hover:text-gray-800"
+                            title="사용자 메뉴" aria-label="사용자 메뉴 열기">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-sm" aria-hidden="true"></i>
+                        </div>
+                        <span class="hidden md:block text-sm">심사역</span>
+                        <i class="fas fa-chevron-down text-xs" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- Dropdown menu (hidden by default) -->
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">프로필</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">설정</a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
