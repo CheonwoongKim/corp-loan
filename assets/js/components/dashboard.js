@@ -53,19 +53,48 @@ async function updateDashboardStatsFromAPI() {
         console.log('📊 대시보드 통계 업데이트 중...');
         const response = await apiService.getAllLoans();
 
-        if (response.success && response.data.loans) {
-            const loans = response.data.loans;
+        console.log('🔍 API 응답:', response);
+
+        // Handle different response formats
+        let loans = [];
+
+        if (response && response.items) {
+            // Direct API response format
+            loans = response.items;
+        } else if (response && response.data && response.data.loans) {
+            // Expected format
+            loans = response.data.loans;
+        } else if (response && Array.isArray(response)) {
+            // Array format
+            loans = response;
+        }
+
+        if (loans.length > 0) {
             const stats = {
                 total: loans.length,
-                processing: loans.filter(loan => loan.workflow_status === 'processing').length,
-                completed: loans.filter(loan => loan.workflow_status === 'completed').length,
-                failed: loans.filter(loan => loan.workflow_status === 'failed').length
+                processing: loans.filter(loan =>
+                    loan.workflow_status === 'processing' ||
+                    loan.status === 'processing' ||
+                    loan.status === '접수' ||
+                    loan.status === 'embedded'
+                ).length,
+                completed: loans.filter(loan =>
+                    loan.workflow_status === 'completed' ||
+                    loan.status === 'completed' ||
+                    loan.status === '완료'
+                ).length,
+                failed: loans.filter(loan =>
+                    loan.workflow_status === 'failed' ||
+                    loan.status === 'failed' ||
+                    loan.status === '실패'
+                ).length
             };
 
             console.log('✅ 통계 데이터:', stats);
             updateDashboardStats(stats);
+            updateRecentApplicationsFromData(loans);
         } else {
-            console.log('❌ 통계 데이터 없음, 기본값 사용');
+            console.log('❌ 대출 데이터 없음, 기본값 사용');
             // Use default empty stats if no data
             const defaultStats = { total: 0, processing: 0, completed: 0, failed: 0 };
             updateDashboardStats(defaultStats);
@@ -231,9 +260,23 @@ async function updateRecentApplications() {
         const response = await apiService.getAllLoans({ limit: 10 });
         console.log('📊 서버 응답:', response);
 
-        if (response.success && response.data.loans && response.data.loans.length > 0) {
-            console.log('✅ 대출 데이터 발견:', response.data.loans.length, '개');
-            recentSection.innerHTML = createRecentApplicationsTable(response.data.loans, true);
+        // Handle different response formats
+        let loans = [];
+
+        if (response && response.items) {
+            // Direct API response format
+            loans = response.items;
+        } else if (response && response.data && response.data.loans) {
+            // Expected format
+            loans = response.data.loans;
+        } else if (response && Array.isArray(response)) {
+            // Array format
+            loans = response;
+        }
+
+        if (loans.length > 0) {
+            console.log('✅ 대출 데이터 발견:', loans.length, '개');
+            recentSection.innerHTML = createRecentApplicationsTable(loans, true);
             return;
         } else {
             console.log('❌ 대출 데이터 없음 또는 실패');
@@ -265,6 +308,16 @@ async function updateRecentApplications() {
             </div>
         `;
     }
+}
+
+/**
+ * Update recent applications section with provided data
+ */
+function updateRecentApplicationsFromData(loans) {
+    const recentSection = document.querySelector('section:last-of-type .p-6');
+    if (!recentSection || !loans || loans.length === 0) return;
+
+    recentSection.innerHTML = createRecentApplicationsTable(loans, true);
 }
 
 /**
@@ -312,14 +365,14 @@ function createWorkflowRow(data, isServerData = false) {
     let loanId, companyName, applicationType, currentStage, documentCount, createdAt, workflowStatus;
 
     if (isServerData) {
-        // Server data format
-        loanId = data.loan_id;
-        companyName = data.company_name;
-        applicationType = data.application_type;
-        currentStage = data.current_stage;
+        // Server data format - handle both API response formats
+        loanId = data.loan_id || data.id || 'Unknown';
+        companyName = data.company_name || data.customer_name || 'Unknown Company';
+        applicationType = data.application_type || data.product_name || '일반대출';
+        currentStage = data.current_stage || 1;
         documentCount = data.document_count || 0;
-        createdAt = data.created_at;
-        workflowStatus = data.workflow_status;
+        createdAt = data.created_at || data.apply_date;
+        workflowStatus = data.workflow_status || data.status;
     } else {
         // Local data format
         loanId = data.loanId;
